@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app
 
 registration = Blueprint('registration', __name__, url_prefix = '/registration')
-from . import utilities, views, errors
+from . import views, errors
 
 @registration.app_context_processor
 def global_variables():

@@ -14,11 +14,20 @@
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 		<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
 		{% endblock head %}
 	</head>
-	<body>
+	<body class="bg-gray-100 font-sans">
 		{% block navbar %}
-		<!-- Navigation Bar -->
+		<nav class="bg-blue-500 text-white py-4">
+			<div class="container mx-auto flex justify-center items-center">
+				<ul class="space-x-6 flex">
+					<li><a href="/" class="text-white">Home</a></li>
+					<li><a href="/about_us" class="text-white">About Us</a></li>
+					<li><a href="/contact" class="text-white">Contact</a></li>
+				</ul>
+			</div>
+		</nav>
 		{% endblock navbar %}
 
 		{% block content %}
@@ -26,7 +35,11 @@
 		{% endblock content %}
 
 		{% block footer %}
-		<!-- footer -->
+		<footer class="bg-gray-900 text-white text-center py-4">
+			<div class="container mx-auto">
+				&copy; 2023 EchoTech Innovators. All rights reserved.
+			</div>
+		</footer>
 		{% endblock footer %}
 	</body>
 </html>

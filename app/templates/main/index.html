@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}
+Home
+{% endblock %}
+
+{% block page_content %}
+<header class="bg-green-900 text-white py-16">
+	<div class="container mx-auto text-center">
+		<h1 class="text-4xl font-semibold mb-4">Planting for a Greener Future</h1>
+		<p class="text-lg mb-8">Join the Movement to Reforest Kenya and Combat Climate Change</p>
+		<a href="/get-started" class="bg-blue-500 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 text-xl">Get Started</a>
+	</div>
+</header>
+
+<section class="bg-white py-12 pl-10 pr-10">
+	<div class="container mx-auto text-center">
+		<p class="text-gray-700">At EchoTech Innovators, we are committed to monitoring and analyzing our tree planting efforts to ensure a positive impact on the environment. We employ various methods and technologies to track and assess our progress:</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="gis.png" alt="GIS" class="w-full h-60 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Geographic Information Systems (GIS)</h3>
+					<p class="text-gray-700">We utilize GIS technology to map and analyze planting locations, helping us make data-driven decisions for optimal tree growth.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/data-visualization.png') }}" alt="Data Visualization" class="w-full h-60 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Data Visualization</h3>
+					<p class="text-gray-700">Our team creates informative graphs and charts to visualize monthly tree planting statistics, enabling us to identify trends and areas for improvement.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/assessment.webp') }}" alt="Impact Assessments" class="w-full h-60 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Environmental Impact Assessments</h3>
+					<p class="text-gray-700">We conduct assessments to evaluate the ecological impact of our tree planting initiatives and adapt our strategies accordingly.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/surveys.jpg') }}" alt="Surveys" class="w-full h-60 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Community Engagement Surveys</h3>
+					<p class="text-gray-700">Feedback from local communities and participants helps us understand their needs and preferences, leading to more effective programs.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/biodiversity.jpeg') }}" alt="Diversity Analysis" class="w-full h-60 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Species Diversity Analysis</h3>
+					<p class="text-gray-700">We monitor and analyze the diversity of tree species planted to promote biodiversity and environmental resilience.</p>
+				</div>
+			</div>
+		</div>
+		<p class="text-gray-700 mt-4">Together, we've planted 10000 trees this year, making a real impact on our environment. Your support and participation play a crucial role in achieving our mission.</p>
+	</div>
+</section>
+
+<!-- Events and Activities Section -->
+<section class="bg-green-200 py-12 pl-10 pr-10">
+	<div class="container mx-auto text-center">
+		<h2 class="text-2xl font-semibold mb-4">Events and Activities</h2>
+		<p class="text-gray-700 mb-6">We organize a wide range of events and activities aimed at promoting reforestation and combating climate change. Join us in our mission and be a part of the change!</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/workshops.jpg') }}" alt="Event 1" class="w-full h-40 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Tree Planting Workshops</h3>
+					<p class="text-gray-700">Join our interactive workshops and learn the art of tree planting, nurturing, and sustainable forestry practices.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/reforestation.jpg') }}" alt="Event 2" class="w-full h-40 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Community Reforestation Drives</h3>
+					<p class="text-gray-700">Participate in community-driven reforestation initiatives, where we come together to plant trees in urban and rural areas.</p>
+				</div>
+			</div>
+			<div class="bg-white border border-gray-200 rounded-lg shadow">
+				<img src="{{ url_for('static', filename = 'main/enviroment-awareness-teaching.webp') }}" alt="Event 3" class="w-full h-40 object-cover rounded-t-lg">
+				<div class="p-4">
+					<h3 class="text-lg font-semibold mb-2">Environmental Education Seminars</h3>
+					<p class="text-gray-700">Join our seminars to gain valuable insights into environmental conservation, climate change, and sustainable living.</p>
+				</div>
+			</div>
+		</div>
+		<div>
+		</div>
+	</div>
+</section>
+
+
+<!-- Get Involved Section -->
+<section class="bg-white py-12">
+	<div class="container mx-auto text-center">
+		<h2 class="text-2xl font-semibold mb-4">Get Involved</h2>
+		<p class="text-gray-700 mb-4">Contribute to our mission by volunteering at tree planting events and educational programs.</p>
+		<p class="text-gray-700 mb-4">Join our community of tree advocates, learn, and make a difference.</p>
+		<a href="/volunteer" class="bg-green-500 text-white py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 text-xl mr-4">Volunteer</a>
+		<a href="/become-a-member" class="bg-blue-500 text-white py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 text-xl">Become a Member</a>
+	</div>
+</section>
+{% endblock page_content %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}
+About Us
+{% endblock %}
+
+{% block page_content %}
+<section class="bg-green-900 text-white py-16">
+	<div class="container mx-auto text-center pl-10 pr-10">
+		<h2 class="text-3xl font-semibold mb-4">Join the EchoTech Community</h2>
+		<p class="text-gray-300 text-lg mb-8">Become part of a movement that's changing Kenya and the world, one tree at a time. By joining EchoTech Innovators, you're not just supporting a cause; you're becoming an essential part of it.</p>
+		<a href="/join" class="bg-blue-500 text-white py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 text-xl">Get Involved</a>
+	</div>
+</section>
+
+<section class="container mx-auto py-8 pl-10 pr-10">
+	<h2 class="text-2xl font-semibold mb-4">Our Story</h2>
+	<p class="text-gray-700">
+	At EchoTech Innovators, we are the pioneers of sustainable change, leading the way in Kenya's fight against climate change. We're not just a team; we're a movement, a community of forward-thinkers with a passion for the environment and a vision for a greener future.
+	</p>
+</section>
+
+<section class="container mx-auto py-8  pl-10 pr-10">
+	<h2 class="text-2xl font-semibold mb-4">Our Mission</h2>
+	<p class="text-gray-700">
+	Empowering Change, One Sapling at a Time. We exist to empower communities across Kenya to take a stand against climate change through reforestation. Our mission is simple, yet profound: to plant trees, cultivate sustainable practices, and inspire a new era of environmental stewardship. Together, we're turning small actions into mighty transformations.
+	</p>
+</section>
+
+<section class="bg-gray-100 py-12 pl-10 pr-10">
+	<div class="container mx-auto">
+		<h2 class="text-2xl font-semibold mb-4">Why EchoTech?</h2>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+			<div class="border border-gray-300 rounded shadow">
+				<div class="relative aspect-w-16 aspect-h-9">
+					<img src="{{ url_for('static', filename = 'main/about_us_eco_warriors.jpg') }}" alt="Feature 1" class="object-cover object-center w-full h-full">
+				</div>
+				<div class="p-6">
+					<h3 class="text-xl font-semibold mb-2">Eco-Warriors in Action</h3>
+					<p class="text-gray-700">We're not just talk. Our team is out there in the field, getting their hands dirty and planting trees. Our work echoes the call for sustainable change.</p>
+				</div>
+			</div>
+			<div class="border border-gray-300 rounded shadow">
+				<div class="relative aspect-w-16 aspect-h-9">
+					<img src="{{ url_for('static', filename = 'main/about_us_community_driven.jpg') }}" alt="Feature 2" class="object-cover object-center w-full h-full">
+				</div>
+				<div class="p-6">
+					<h3 class="text-xl font-semibold mb-2">Community-Driven</h3>
+					<p class="text-gray-700">We believe that real change begins at the grassroots level. We empower and educate local communities to be the change-makers of tomorrow.</p>
+				</div>
+			</div>
+			<div class="border border-gray-300 rounded shadow">
+				<div class="relative aspect-w-16 aspect-h-9">
+					<img src="{{ url_for('static', filename = 'main/about_us_cutting_edge_technology.png') }}" alt="Feature 3" class="object-cover object-center w-full h-full">
+				</div>
+				<div class="p-6">
+					<h3 class="text-xl font-semibold mb-2">Cutting-Edge Technology</h3>
+					<p class="text-gray-700">Innovation is in our DNA. We leverage the latest tech to monitor and protect the trees we plant, ensuring their growth and longevity.</p>
+				</div>
+			</div>
+			<div class="border border-gray-300 rounded shadow">
+				<div class="relative aspect-w-16 aspect-h-9">
+					<img src="{{ url_for('static', filename = 'main/about_us_positive_impact.webp') }}" alt="Feature 4" class="object-cover object-center w-full h-full">
+				</div>
+				<div class="p-6">
+					<h3 class="text-xl font-semibold mb-2">Positive Impact</h3>
+					<p class="text-gray-700">Our tree planting initiatives aren't just about numbers; they're about impact. Every tree is a step towards cleaner air, richer biodiversity, and a healthier planet.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="container mx-auto py-8 pl-4 pr-4 md:pl-10 md:pr-10">
+	<h2 class="text-2xl font-semibold text-center mb-4">Meet the Team</h2>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+		<div class="p-4 md:p-6 border border-gray-300 rounded shadow text-center">
+			<img src="{{ url_for('static', filename = 'main/beryl_atieno.jpeg') }}" alt="Team Member 1" class="rounded-full w-32 h-32 mx-auto mb-4">
+			<h3 class="text-xl font-semibold">Beryl Atieno</h3>
+			<p class="text-gray-700">Team Lead</p>
+		</div>
+		<div class="p-4 md:p-6 border border-gray-300 rounded shadow text-center">
+			<img src="{{ url_for('static', filename = 'main/faith_chemutai.png') }}" alt="Team Member 2" class="rounded-full w-32 h-32 mx-auto mb-4">
+			<h3 class="text-xl font-semibold">Faith Chemutai</h3>
+			<p class="text-gray-700">Intermediate Data Scientist</p>
+		</div>
+		<div class="p-4 md:p-6 border border-gray-300 rounded shadow text-center">
+			<img src="{{ url_for('static', filename = 'main/david_munyiri_mwangi.jpeg') }}" alt="Team Member 3" class="rounded-full w-32 h-32 mx-auto mb-4">
+			<h3 class="text-xl font-semibold">David Munyiri Mwangi</h3>
+			<p class="text-gray-700">Full Stack Developer</p>
+		</div>
+		<div class="p-4 md:p-6 border border-gray-300 rounded shadow text-center">
+			<img src="{{ url_for('static', filename = 'main/cyrus_mureithi.png') }}" alt="Team Member 4" class="rounded-full w-32 h-32 mx-auto mb-4">
+			<h3 class="text-xl font-semibold">Cyrus Mureithi</h3>
+			<p class="text-gray-700">Tech Evangelist</p>
+		</div>
+		<div class="p-4 md:p-6 border border-gray-300 rounded shadow text-center">
+			<img src="{{ url_for('static', filename = 'main/barasa_michael.jpeg') }}" alt="Team Member 5" class="rounded-full w-32 h-32 mx-auto mb-4">
+			<h3 class="text-xl font-semibold">Barasa Michael</h3>
+			<p class="text-gray-700">VIM Enthusiast</p>
+		</div>
+	</div>
+</section>
+{% endblock %}
