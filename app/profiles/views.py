@@ -8,6 +8,10 @@ from geopy.geocoders import ArcGIS
 from datetime import timedelta, datetime
 
 from . import profiles
-#from .forms import ()
 from .. import db
 from ..models import User
+
+
+@profiles.route('/dashboard', methods = ["GET"])
+def dashboard():
+    return flask.render_template("analytics/mapping.html")

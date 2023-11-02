@@ -28,41 +28,6 @@ User Login
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Login</button>
         </form>
 
-        <script>
-            document.getElementById('login-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                fetch('/api/v1/login', {
-                    method: 'POST',
-                    body: new FormData(this),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Display the alert with a message
-                    showAlert(data.message);
-
-                    if (data.message === 'Login successful') {
-                        window.location.href = '/dashboard';
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    // Display an error alert
-                    showAlert('Login failed', 'error');
-                });
-            });
-
-            function showAlert(message, type = 'success') {
-                const alertElement = document.getElementById('alertMessage');
-                alertElement.innerText = message;
-                alertElement.className = `alert ${type} p-3 mb-6`;
-                alertElement.style.display = 'block';
-
-                // Dismiss the alert after a few seconds (adjust the timeout as needed)
-                setTimeout(() => {
-                    alertElement.style.display = 'none';
-                }, 5000); // Dismiss after 5 seconds
-            }
-        </script>
+	<script src = "{{ url_for('static', filename = 'js/authentication/login_user.js') }}"></script>
     </div>
 {% endblock %}

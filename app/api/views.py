@@ -32,3 +32,18 @@ def register_user():
     # Log in the newly registered user
     login_user(user)
     return flask.jsonify({"message": "User registered successfully"}), 201
+
+
+@api.route("/login", methods = ["POST"])
+def login_user():
+    form = flask.request.form
+    # Check whether user with username exists
+    user = User.query.filter_by(username = form.get("username")).first()
+    if user:
+        # Check whether password is valid
+        if user.login(form.get('password')):
+            return flask.jsonify({"message": "Login successful"}), 201
+
+    else:
+        return flask.jsonify({"message": "User not found"}), 400
+

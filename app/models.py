@@ -3,7 +3,7 @@ import hashlib
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
-from flask_login import AnonymousUserMixin, UserMixin
+from flask_login import AnonymousUserMixin, UserMixin, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -200,8 +200,13 @@ class User(UserMixin, db.Model):
         pass
 
     def login(self, password):
-        # Add login logic here
-        pass
+        if self.verify_password(password):
+            login_user(self)
+            return True
+
+        else:
+            return False
+
 
     def resetPassword(self, newPassword):
         # Add password reset logic here

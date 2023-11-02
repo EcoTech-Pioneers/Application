@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app
 
-analytics = Blueprint('analytics', __name__)
+analytics = Blueprint('analytics', __name__, url_prefix = "/analytics")
 from . import views, errors
 
 @analytics.app_context_processor
