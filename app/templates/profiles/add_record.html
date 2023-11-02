@@ -1,8 +1,44 @@
 {% extends "base.html" %}
 {% block title %}
-Add Record
+Add Tree Planting Record
 {% endblock %}
 
 {% block page_content %}
+<style>
+.alert {
+	background-color: #f3f4f6;
+	border-left: 4px solid #e53e3e;
+}
+</style>
+<div class="w-96 mx-auto bg-white p-6 rounded shadow-lg mt-10 mb-10">
+	<h1 class="text-2xl font-bold mb-6 text-center">Add Tree Planting Record</h1>
+	<!-- Alert for displaying messages -->
+	<div id="alertMessage" class="hidden alert p-3 mb-6"></div>
+
+	<form id="record-form" method="POST" action="/api/v1/add_record">
+		{{ form.hidden_tag() }}
+		<div class="mb-4">
+			{{ form.species.label }}
+			{{ form.species(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			{{ form.datePlanted.label }}
+			{{ form.datePlanted(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			{{ form.numberOfTrees.label }}
+			{{ form.numberOfTrees(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			{{ form.imageUrl.label }}
+			{{ form.imageUrl(class="w-full border border-gray-300 p-2") }}
+		</div>
+		<div class="mb-4">
+			{{ form.location.label }}
+			{{ form.location(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Record</button>
+	</form>
+</div>
 <script src = "{{ url_for('static', filename = 'js/profiles/add_record.js') }}"></script>
 {% endblock %}

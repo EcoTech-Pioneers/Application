@@ -1,24 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import (StringField, SelectField, TextAreaField, MultipleFileField, 
-        IntegerField)
+from wtforms import StringField, DateField, IntegerField, FileField, TextAreaField, DateTimeField
 from wtforms.validators import DataRequired, Length
 
-class CreateReportForm(FlaskForm):
-    location = StringField("Location", validators = [DataRequired(), 
-        Length(1, 255)])
-    category_id = SelectField("Category", validators = [DataRequired()])
-    description = TextAreaField("Description", validators = [DataRequired()])
-    images = MultipleFileField("Upload Images")
+class AddRecordForm(FlaskForm):
+    species = StringField('Species', [DataRequired(), Length(max=255)])
+    datePlanted = DateField('Date Planted', [DataRequired()], format='%Y-%m-%d')
+    numberOfTrees = IntegerField('Number of Trees', [DataRequired()])
+    imageUrl = FileField('Upload Images', [Length(max=255)])
+    location = StringField('Location', [DataRequired(), Length(max=255)])
 
 
-class CreateCategoryForm(FlaskForm):
-    name = StringField('Category Name', validators=[DataRequired(), 
-        Length(1, 50)])
-    description = TextAreaField('Description', validators=[DataRequired(), 
-        Length(1, 800)])
-
-
-class CreateRewardForm(FlaskForm):
-    name = StringField('Reward Name', validators=[DataRequired(), 
-        Length(1, 50)])
-    pointsRequired = IntegerField('Points Required', validators=[DataRequired()])
+class CreateEventForm(FlaskForm):
+    title = StringField('Event Title', [DataRequired(), Length(max=255)])
+    description = TextAreaField('Event Description', [DataRequired()])
+    imageUrl = FileField('Upload Image', [Length(max=255)])
+    startDateTime = DateTimeField('Start Date and Time', [DataRequired()])
+    endDateTime = DateTimeField('End Date and Time', [DataRequired()])
+    venue = StringField('Venue', [DataRequired(), Length(max=255)])
+    organizer = StringField('Organizer', [Length(max=128)])

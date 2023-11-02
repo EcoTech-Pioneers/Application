@@ -8,8 +8,11 @@ from flask_login import current_user, login_required, login_user
 from . import api
 from .forms import (RegisterUserForm) 
 from .. import db
-from ..models import User
+from ..models import User, Record
 
+# =====================================================================
+# REGISTRATION ROUTES
+# =====================================================================
 
 @api.route("/register_user", methods = ["POST"])
 def register_user():
@@ -34,6 +37,9 @@ def register_user():
     return flask.jsonify({"message": "User registered successfully"}), 201
 
 
+#====================================================================
+# AUTHENTICATION ROUTES
+# ====================================================================
 @api.route("/login", methods = ["POST"])
 def login_user():
     form = flask.request.form
@@ -47,3 +53,30 @@ def login_user():
     else:
         return flask.jsonify({"message": "User not found"}), 400
 
+#====================================================================
+# PROFILES ROUTES
+# ====================================================================
+@api.route("/add_record", methods = ["POST"])
+def add_record():
+    form = flask.request.form
+    if (current_user.addRecord(form)):
+        return flask.jsonify({"message": "Record added successfully"}), 201
+    
+    return flask.jsonify({"message": "An error occurred while saving data"}), 400
+
+
+@api.route("/all_records", methods = ["GET"])
+def all_records():
+    records = Record.query.all()
+    return flask.jsonify({"records": records})
+
+
+@api.route("/records", methods = ["GET"])
+def records():
+    results = current_user.getRecords()
+    
+    page = flask.request.args.get('page', 1, type = int)
+    per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+    results = Record.to_collection_dict(results, page, per_page, 
+            'api.get_records')
+    return flask.jsonify(results)

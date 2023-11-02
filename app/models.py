@@ -3,11 +3,23 @@ import hashlib
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
-from flask_login import AnonymousUserMixin, UserMixin, login_user
+from flask_login import AnonymousUserMixin, UserMixin, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 from . import db, login_manager
+from .utilities.geolocator import generate_coordinates
+
+
+class PaginatedAPIMixin(object):
+    @staticmethod
+    def to_collection_dict(query, page, per_page, endpoint, **kwargs):
+        resources = query.paginate(page=page, per_page=per_page,
+                                   error_out=False)
+        data = {
+            'items': [item.to_dict() for item in resources.items]
+        }
+        return data
 
 
 class Permission:
@@ -47,7 +59,7 @@ class Role(db.Model):
         roles = {
                 'Guest' : [Permission.VISIT],
                 'Member' : [Permission.VISIT, Permission.MEMBER],
-                'Administrator' : [Permission.VISIT, Permission.MODERATE, 
+                'Administrator' : [Permission.VISIT, Permission.MODERATE,
                     Permission.MEMBER, Permission.ADMIN]
                 }
 
@@ -116,7 +128,7 @@ class User(UserMixin, db.Model):
 
     # relationships
     roleId = db.Column(db.Integer, db.ForeignKey('role.roleId'))
-    
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
@@ -136,7 +148,7 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return self.userId
 
-    
+
     def gravatar_hash(self):
         return hashlib.md5(self.emailAddress.lower().encode('utf-8')).hexdigest()
 
@@ -184,7 +196,7 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
-    
+
 
     def register(self, form):
         self.username = form.get('username')
@@ -233,12 +245,32 @@ class User(UserMixin, db.Model):
         pass
 
     def addRecord(self, form):
-        # Add record creation logic here
-        pass
+        record = Record(
+                species = form.get("species"),
+                datePlanted = datetime.strptime(form.get("datePlanted"), 
+                    "%Y-%m-%d"),
+                numberOfTrees = form.get("numberOfTrees"),
+                location = form.get("location")
+                )
+        record.userId = current_user.userId
+        
+        # Get latitude and longitude
+        latitude, longitude = generate_coordinates(form.get("location"))
+        if latitude and longitude:
+            record.latitude = latitude
+            record.longitude = longitude
+
+        db.session.add(record)
+        db.session.commit()
+        return True
+
 
     def getRecords(self):
-        # Add logic to retrieve user's records here
-        pass
+        page = flask.request.args.get('page', 1, type = int)
+        per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+        records = Record.query.filter(Record.userId == current_user.userId)
+        return records
+
 
     def confirmRecord(self, recordId):
         # Add record confirmation logic here
@@ -271,7 +303,7 @@ class Event(db.Model):
         pass
 
 
-class Record(db.Model):
+class Record(PaginatedAPIMixin, db.Model):
     __tablename__ = 'record'
 
     recordId = db.Column(db.Integer, primary_key=True, autoincrement=True, index=True)
@@ -287,6 +319,25 @@ class Record(db.Model):
     lastUpdated = db.Column(db.DateTime, onupdate=datetime.utcnow)
     isConfirmed = db.Column(db.Boolean, default=False)
     isRevoked = db.Column(db.Boolean, default=False)
+
+    def to_dict(self, include_email=False):
+        data = {
+            'recordId': self.recordId,
+            'species': self.species,
+            'dateCreated': self.dateCreated.isoformat() + 'Z',
+            'datePlanted': self.datePlanted.isoformat() + 'Z',
+            'numberOfTrees': self.numberOfTrees,
+            'imageUrl': self.imageUrl,
+            'location': self.location,
+            'isConfirmed': self.isConfirmed,
+            'isRevoked': self.isRevoked,
+            'lastUpdated': self.lastUpdated,
+            'latitude': self.latitude,
+            'longitude': self.longitude
+        }
+        if include_email:
+            data['email'] = self.email
+        return data
 
 
 class RegisteredEvent(db.Model):

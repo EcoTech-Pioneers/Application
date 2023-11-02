@@ -4,5 +4,14 @@ Dashboard
 {% endblock %}
 
 {% block page_content %}
+<p><a href = "{{ url_for('profiles.add_record') }}">Add Record</a></p>
+<p><a href = "{{ url_for('profiles.all_records', own = 1) }}">View Records</a></p>
+<p><a href = "{{ url_for('profiles.create_event') }}">Create New Event</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">View All Records</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">View Scheduled Events</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">View All Events</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">View Attended Events</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">View Booked Events</a></p>
+<p><a href = "{{ url_for('profiles.add_record') }}">Add Record</a></p>
 <script src = "{{ url_for('static', filename = 'js/profiles/login_user.js') }}"></script>
 {% endblock %}
