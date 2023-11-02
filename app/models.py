@@ -15,10 +15,10 @@ class PaginatedAPIMixin(object):
     @staticmethod
     def to_collection_dict(query, page, per_page, endpoint, **kwargs):
         resources = query.paginate(page=page, per_page=per_page,
-                                   error_out=False)
+                error_out=False)
         data = {
-            'items': [item.to_dict() for item in resources.items]
-        }
+                'items': [item.to_dict() for item in resources.items]
+                }
         return data
 
 
@@ -224,9 +224,29 @@ class User(UserMixin, db.Model):
         # Add password reset logic here
         pass
 
-    def scheduleEvent(self):
-        # Add scheduling event logic here
-        pass
+    def scheduleEvent(self, form):
+        start = datetime.strptime(form.get("startDateTime"), "%Y-%m-%dT%H:%M")
+        end = datetime.strptime(form.get("endDateTime"), "%Y-%m-%dT%H:%M")
+        event = Event(
+                title = form.get("title"),
+                description = form.get("description"),
+                imageUrl = form.get("imageUrl"),
+                startDateTime = start,
+                endDateTime = end,
+                venue = form.get("venue"),
+                organizer = form.get("organizer")
+                )
+        
+        event.creatorId = current_user.userId
+        # Get latitude and longitude
+        latitude, longitude = generate_coordinates(form.get("venue"))
+        if latitude and longitude:
+            event.latitude = latitude
+            event.longitude = longitude
+
+        db.session.add(event)
+        db.session.commit()
+        return True
 
     def attendEvent(self):
         # Add attend event logic here
@@ -243,17 +263,23 @@ class User(UserMixin, db.Model):
     def getAttendedEvents(self):
         # Add logic to retrieve attended events here
         pass
+    
+    def getCreatedEvents(self):
+        page = flask.request.args.get('page', 1, type = int)
+        per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+        records = Event.query.filter(Event.creatorId == current_user.userId)
+        return records
 
     def addRecord(self, form):
         record = Record(
                 species = form.get("species"),
-                datePlanted = datetime.strptime(form.get("datePlanted"), 
+                datePlanted = datetime.strptime(form.get("datePlanted"),
                     "%Y-%m-%d"),
                 numberOfTrees = form.get("numberOfTrees"),
                 location = form.get("location")
                 )
         record.userId = current_user.userId
-        
+
         # Get latitude and longitude
         latitude, longitude = generate_coordinates(form.get("location"))
         if latitude and longitude:
@@ -294,13 +320,32 @@ class Event(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     organizer = db.Column(db.String(255))
+    creatorId = db.Column(db.Integer, nullable = False)
     isCancelled = db.Column(db.Boolean, default=False)
     dateCreated = db.Column(db.DateTime, default=datetime.utcnow)
-    lastUpdated = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    lastUpdated = db.Column(db.DateTime, default = datetime.utcnow, 
+            onupdate=datetime.utcnow)
 
     def getEventDetails(self):
-        # Add logic to retrieve event details here
-        pass
+        return self.to_dict()
+
+    def to_dict(self):
+        data = {
+                'eventId': self.eventId,
+                'title': self.title,
+                'description': self.description,
+                'startDateTime': self.startDateTime,
+                'endDateTime': self.endDateTime,
+                'venue': self.venue,
+                'organizer': self.organizer,
+                'imageUrl': self.imageUrl,
+                'isCancelled': self.isCancelled,
+                'latitude': self.latitude,
+                'longitude': self.longitude,
+                'dateCreated': self.dateCreated.isoformat() + 'Z',
+                'lastUpdated': self.dateCreated.isoformat() + 'Z'
+                }
+        return data
 
 
 class Record(PaginatedAPIMixin, db.Model):
@@ -316,27 +361,26 @@ class Record(PaginatedAPIMixin, db.Model):
     location = db.Column(db.String(255))
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
-    lastUpdated = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    lastUpdated = db.Column(db.DateTime, default = datetime.utcnow, 
+            onupdate=datetime.utcnow)
     isConfirmed = db.Column(db.Boolean, default=False)
     isRevoked = db.Column(db.Boolean, default=False)
 
-    def to_dict(self, include_email=False):
+    def to_dict(self):
         data = {
-            'recordId': self.recordId,
-            'species': self.species,
-            'dateCreated': self.dateCreated.isoformat() + 'Z',
-            'datePlanted': self.datePlanted.isoformat() + 'Z',
-            'numberOfTrees': self.numberOfTrees,
-            'imageUrl': self.imageUrl,
-            'location': self.location,
-            'isConfirmed': self.isConfirmed,
-            'isRevoked': self.isRevoked,
-            'lastUpdated': self.lastUpdated,
-            'latitude': self.latitude,
-            'longitude': self.longitude
-        }
-        if include_email:
-            data['email'] = self.email
+                'recordId': self.recordId,
+                'species': self.species,
+                'dateCreated': self.dateCreated.isoformat() + 'Z',
+                'datePlanted': self.datePlanted.isoformat() + 'Z',
+                'numberOfTrees': self.numberOfTrees,
+                'imageUrl': self.imageUrl,
+                'location': self.location,
+                'isConfirmed': self.isConfirmed,
+                'isRevoked': self.isRevoked,
+                'lastUpdated': self.lastUpdated,
+                'latitude': self.latitude,
+                'longitude': self.longitude
+                }
         return data
 
 
@@ -349,4 +393,5 @@ class RegisteredEvent(db.Model):
     isCancelled = db.Column(db.Boolean, default=False)
     isAttended = db.Column(db.Boolean, default=False)
     dateCreated = db.Column(db.DateTime, default=datetime.utcnow)
-    lastUpdated = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    lastUpdated = db.Column(db.DateTime, default = datetime.utcnow, 
+            onupdate=datetime.utcnow)

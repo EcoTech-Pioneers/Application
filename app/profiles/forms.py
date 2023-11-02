@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField, FileField, TextAreaField, DateTimeField
+from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import DataRequired, Length
 
 class AddRecordForm(FlaskForm):
@@ -14,7 +15,7 @@ class CreateEventForm(FlaskForm):
     title = StringField('Event Title', [DataRequired(), Length(max=255)])
     description = TextAreaField('Event Description', [DataRequired()])
     imageUrl = FileField('Upload Image', [Length(max=255)])
-    startDateTime = DateTimeField('Start Date and Time', [DataRequired()])
-    endDateTime = DateTimeField('End Date and Time', [DataRequired()])
+    startDateTime = DateTimeLocalField('Start Date and Time', [DataRequired()])
+    endDateTime = DateTimeLocalField('End Date and Time', [DataRequired()])
     venue = StringField('Venue', [DataRequired(), Length(max=255)])
     organizer = StringField('Organizer', [Length(max=128)])

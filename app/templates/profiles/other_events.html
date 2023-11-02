@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block title %}
-Other Events
+Available Events
 {% endblock %}
 
 {% block page_content %}
-<script src = "{{ url_for('static', filename = 'js/profiles/other_events.js') }}"></script>
+<div class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-semibold mb-4">Available Events</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="event-container">
+        <!-- Event cards will be dynamically added here using JavaScript -->
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/profiles/all_events.js') }}"></script>
 {% endblock %}

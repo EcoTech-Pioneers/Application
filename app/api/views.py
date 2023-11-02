@@ -67,8 +67,13 @@ def add_record():
 
 @api.route("/all_records", methods = ["GET"])
 def all_records():
-    records = Record.query.all()
-    return flask.jsonify({"records": records})
+    results = Record.query
+    
+    page = flask.request.args.get('page', 1, type = int)
+    per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+    results = Record.to_collection_dict(results, page, per_page, 
+            'api.all_records')
+    return flask.jsonify(results)
 
 
 @api.route("/records", methods = ["GET"])
@@ -80,3 +85,35 @@ def records():
     results = Record.to_collection_dict(results, page, per_page, 
             'api.get_records')
     return flask.jsonify(results)
+
+
+@api.route("/register_event", methods = ["POST"])
+def register_event():
+    form = flask.request.form
+    if (current_user.scheduleEvent(form)):
+        return flask.jsonify({"message": "Event registered successfully"}), 201
+
+    return flask.jsonify({"message": "An error occurred while saving data"}), 400
+
+
+@api.route("/all_events", methods = ["GET"])
+def all_events():
+    results = Event.query
+    
+    page = flask.request.args.get('page', 1, type = int)
+    per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+    results = Record.to_collection_dict(results, page, per_page, 
+            'api.all_events')
+    return flask.jsonify(results)
+
+
+@api.route("/events", methods = ["GET"])
+def events():
+    results = current_user.getCreatedEvents()
+    
+    page = flask.request.args.get('page', 1, type = int)
+    per_page = min(flask.request.args.get('per_page', 10, type = int), 100)
+    results = Record.to_collection_dict(results, page, per_page, 
+            'api.events')
+    return flask.jsonify(results)
+

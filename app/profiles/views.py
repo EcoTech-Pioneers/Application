@@ -29,6 +29,11 @@ def all_records():
     return flask.render_template("profiles/all_records.html")
 
 
+@profiles.route('/other_events', methods = ["GET"])
+def other_records():
+    return flask.render_template("profiles/other_events.html")
+
+
 @profiles.route("/create_event", methods = ["GET"])
 def create_event():
     form = CreateEventForm()
