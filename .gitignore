@@ -1,4 +1,7 @@
 __pycache__/
+migrations
+data-dev-sqlite
+**/migrations
 **/__pycache__/
 **/.swp
 **/.swo
