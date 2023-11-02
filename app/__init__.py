@@ -46,4 +46,7 @@ def create_app(config_name):
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint)
     
+    from .analytics import analytics as analytics_blueprint
+    app.register_blueprint(analytics_blueprint)
+    
     return app
