@@ -11,21 +11,7 @@ from .. import db
 from ..models import User
 
 
-@registration.route("/api/register", methods = ["POST"])
+@registration.route("/register_user", methods = ["GET"])
 def register_user():
-    form = RegisterUserForm(request.form)
-    if form.validate_on_submit():
-        user = User(
-                username = form.username.data,
-                password = form.password.data,
-                emailAddress = form.email.data,
-                phoneNumber = form.phone_number.data
-                )
-        db.session.add(user)
-        db.session.commit()
-
-        login_user(user)
-        return jsonify({"message": "User registered successfully"}), 201
-
-    else:
-        return jsonify({"message": "Invalid form data"}), 400
+    form = RegisterUserForm()
+    return flask.render_template("registration/register_user.html", form = form)

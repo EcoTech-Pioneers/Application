@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}
+User Login
+{% endblock %}
+
+{% block page_content %}
+    <style>
+        .alert {
+            background-color: #f3f4f6;
+            border-left: 4px solid #e53e3e;
+        }
+    </style>
+    <div class="w-96 mx-auto bg-white p-6 mt-10 mb-10 rounded shadow-lg">
+        <h1 class="text-2xl font-bold mb-6 text-center">User Login</h1>
+        <!-- Alert for displaying messages -->
+        <div id="alertMessage" class="hidden alert p-3 mb-6"></div>
+
+        <form id="login-form" method="POST" action="/api/v1/login">
+            {{ form.csrf_token }}
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700">Username:</label>
+                {{ form.username(class="w-full border border-gray-300 p-2", required=True) }}
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700">Password:</label>
+                {{ form.password(class="w-full border border-gray-300 p-2", required=True) }}
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Login</button>
+        </form>
+
+        <script>
+            document.getElementById('login-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                fetch('/api/v1/login', {
+                    method: 'POST',
+                    body: new FormData(this),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the alert with a message
+                    showAlert(data.message);
+
+                    if (data.message === 'Login successful') {
+                        window.location.href = '/dashboard';
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Display an error alert
+                    showAlert('Login failed', 'error');
+                });
+            });
+
+            function showAlert(message, type = 'success') {
+                const alertElement = document.getElementById('alertMessage');
+                alertElement.innerText = message;
+                alertElement.className = `alert ${type} p-3 mb-6`;
+                alertElement.style.display = 'block';
+
+                // Dismiss the alert after a few seconds (adjust the timeout as needed)
+                setTimeout(() => {
+                    alertElement.style.display = 'none';
+                }, 5000); // Dismiss after 5 seconds
+            }
+        </script>
+    </div>
+{% endblock %}

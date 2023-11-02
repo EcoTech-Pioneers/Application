@@ -101,7 +101,7 @@ class Anonymous_User(AnonymousUserMixin):
 login_manager.anonymous_user = Anonymous_User
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     userId = db.Column(db.Integer, primary_key=True, autoincrement=True, index=True)
@@ -187,8 +187,13 @@ class User(db.Model):
     
 
     def register(self, form):
-        # Add registration logic here
-        pass
+        self.username = form.get('username')
+        self.password = form.get('password')
+        self.emailAddress = form.get('email')
+        self.phoneNumber = form.get('phone_number')
+
+        db.session.add(self)
+        db.session.commit()
 
     def updateProfile(self, form):
         # Add profile update logic here

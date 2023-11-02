@@ -1,49 +1,45 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>User Registration</title>
-	</head>
-	<body>
-		<h1>User Registration</h1>
-		<form id="registration-form" method="POST" action="/api/register">
-			<label for="username">Username:</label>
-			<input type="text" name="username" required>
-			<br>
-			<label for="password">Password:</label>
-			<input type="password" name="password" required>
-			<br>
-			<label for="confirm_password">Confirm Password:</label>
-			<input type="password" name="confirm_password" required>
-			<br>
-			<label for="email">Email Address:</label>
-			<input type="email" name="email" required>
-			<br>
-			<label for="phone_number">Phone Number:</label>
-			<input type="text" name="phone_number" required>
-			<br>
-			<button type="submit">Register</button>
-		</form>
+{% extends "base.html" %}
+{% block title %}
+User Registration
+{% endblock %}
 
-		<script>
-        document.getElementById('registration-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            
-            fetch('/api/register', {
-                method: 'POST',
-                body: new FormData(this),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                if (data.message === 'User registered successfully') {
-                    window.location.href = '/dashboard';
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('Registration failed');
-            });
-        });
-		</script>
-	</body>
-</html>
+{% block page_content %}
+<style>
+.alert {
+	background-color: #f3f4f6;
+	border-left: 4px solid #e53e3e;
+}
+</style>
+<div class="w-96 mx-auto bg-white p-6 rounded shadow-lg mt-10 mb-10 rounded-lg">
+	<h1 class="text-2xl font-bold mb-6 text-center">User Registration</h1>
+	<!-- Alert for displaying messages -->
+	<div id="alertMessage" class="hidden alert p-3 mb-6"></div>
+
+	<form id="registration-form" method="POST" action="/api/v1/register_user">
+		{{ form.csrf_token }}
+		<div class="mb-4">
+			<label for="username" class="block text-gray-700">Username:</label>
+			{{ form.username(class="w-full border border-gray-300 p-2", required=True) }}
+		</div>
+		<div class="mb-4">
+			<label for="password" class="block text-gray-700">Password:</label>
+			{{ form.password(class="w-full border border-gray-300 p-2", required=True) }}
+		</div>
+		<div class="mb-4">
+			<label for="confirm_password" class="block text-gray-700">Confirm Password:</label>
+			{{ form.confirm_password(class="w-full border border-gray-300 p-2", required=True) }}
+		</div>
+		<div class="mb-4">
+			<label for="email" class="block text-gray-700">Email Address:</label>
+			{{ form.email(class="w-full border border-gray-300 p-2", required=True) }}
+		</div>
+		<div class="mb-4">
+			<label for="phone_number" class="block text-gray-700">Phone Number:</label>
+			{{ form.phone_number(class="w-full border border-gray-300 p-2", required=True) }}
+		</div>
+		<button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Register</button>
+	</form>
+
+	<script src = "{{ url_for('static', filename = 'js/registration/register_user.js') }}"></script>
+</div>
+{% endblock %}

@@ -6,14 +6,6 @@ from .. import db
 from ..models import User
 
 
-@authentication.before_app_request
-def before_request():
-    if current_user.is_authenticated and not current_user.confirmed \
-            and flask.request.blueprint != 'authentication' \
-            and flask.request.blueprint != 'static':
-                return flask.redirect(flask.url_for('authentication.unconfirmed'))
-
-
 @authentication.route('/logout')
 @login_required
 def logout():

@@ -11,21 +11,24 @@ from .. import db
 from ..models import User
 
 
-@api.route("/register", methods = ["POST"])
+@api.route("/register_user", methods = ["POST"])
 def register_user():
-    form = RegisterUserForm(request.form)
-    if form.validate_on_submit():
-        user = User(
-                username = form.username.data,
-                password = form.password.data,
-                emailAddress = form.email.data,
-                phoneNumber = form.phone_number.data
-                )
-        db.session.add(user)
-        db.session.commit()
+    form = flask.request.form
 
-        login_user(user)
-        return jsonify({"message": "User registered successfully"}), 201
+    # Check the uniqueness of email, username and phone_number
+    if User.query.filter_by(username = form.get('username')).first():
+        return flask.jsonify({"message": "Username already exists"}), 400
 
-    else:
-        return jsonify({"message": "Invalid form data"}), 400
+    if User.query.filter_by(emailAddress = form.get('email')).first():
+        return flask.jsonify({"message": "Email already exists"}), 400
+
+    if User.query.filter_by(phoneNumber = form.get('phone_number')).first():
+        return flask.jsonify({"message": "Phone Number already exists"}), 400
+
+    # Create a new user
+    user = User()
+    user.register(form)
+
+    # Log in the newly registered user
+    login_user(user)
+    return flask.jsonify({"message": "User registered successfully"}), 201
