@@ -1,8 +1,52 @@
 {% extends "base.html" %}
 {% block title %}
-Create Event
+Event Registration
 {% endblock %}
 
 {% block page_content %}
-<script src = "{{ url_for('static', filename = 'js/authentication/login_user.js') }}"></script>
+<style>
+.alert {
+	background-color: #f3f4f6;
+	border-left: 4px solid #e53e3e;
+}
+</style>
+<div class="w-96 mx-auto bg-white p-6 rounded shadow-lg mt-10 mb-10">
+	<h1 class="text-2xl font-bold mb-6 text-center">Event Registration</h1>
+	<!-- Alert for displaying messages -->
+	<div id="alertMessage" class="hidden alert p-3 mb-6"></div>
+
+	<form id="event-registration-form" method="POST" action="/api/v1/create_event">
+		{{ form.hidden_tag() }}
+		<div class="mb-4">
+			<label for="title" class="block text-gray-700">Event Title:</label>
+			{{ form.title(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			<label for="description" class="block text-gray-700">Event Description:</label>
+			{{ form.description(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			<label for="imageUrl" class="block text-gray-700">Image URL:</label>
+			{{ form.imageUrl(class="w-full border border-gray-300 p-2") }}
+		</div>
+		<div class="mb-4">
+			<label for="startDateTime" class="block text-gray-700">Start Date and Time:</label>
+			{{ form.startDateTime(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			<label for="endDateTime" class="block text-gray-700">End Date and Time:</label>
+			{{ form.endDateTime(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			<label for="venue" class="block text-gray-700">Venue:</label>
+			{{ form.venue(class="w-full border border-gray-300 p-2", required=true) }}
+		</div>
+		<div class="mb-4">
+			<label for="organizer" class="block text-gray-700">Organizer:</label>
+			{{ form.organizer(class="w-full border border-gray-300 p-2") }}
+		</div>
+		<button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Register Event</button>
+	</form>
+</div>
+<script src = "{{ url_for('static', filename = 'js/profiles/schedule_event.js') }}"></script>
 {% endblock %}
