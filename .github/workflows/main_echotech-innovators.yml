@@ -25,6 +25,10 @@ jobs:
       - name: Create and start virtual environment
         run: |
           python -m venv venv
+          source venv/bin/activate
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
@@ -60,4 +64,4 @@ jobs:
         with:
           app-name: 'echotech-innovators'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_827B2B97D36D434588F208D0A8FAB643 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D86D0068AD214CFA880D4B95DBB2B950 }}
